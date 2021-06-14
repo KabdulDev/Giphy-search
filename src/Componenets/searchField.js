@@ -1,6 +1,6 @@
 
 import { render } from '@testing-library/react';
-import {useState, Component} from 'react';
+import { Component} from 'react';
 import Results from './gifCard';
 
 
@@ -40,22 +40,37 @@ class Search extends Component {
         })
 
     }
+    
+    showResults = () =>{
+        this.state.searchResults.map((result,i) => {
+            return <Results 
+                key ={i}
+                data = {result}
+        />
+        })
+    }
 
 
   render() {
     return (
         <div >
-            <form onSubmit={this.handleSubmit}>
-                <input
-                    type="text"
-                    onChange={this.handleChange}
-                    
-                />
-                <input 
-                    type="submit"
-                    value="Search"
-                />
-            </form>
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <input
+                        type="text"
+                        onChange={this.handleChange}
+                        
+                    />
+                    <input 
+                        type="submit"
+                        value="Search"
+                    />
+                </form>
+
+            </div>
+            <div>
+                {this.showResults}
+            </div>
           
         </div>
       );
