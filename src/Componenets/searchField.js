@@ -1,8 +1,18 @@
-import './App.css';
 
 function Search(props) {
   return (
-    <div className="App">
+    <div >
+        <form >
+            <input
+                type="text"
+                value={props.query}
+                
+            />
+            <input 
+                type="submit"
+                value="Search"
+            />
+        </form>
       
     </div>
   );
