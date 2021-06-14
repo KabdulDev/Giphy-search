@@ -1,31 +1,37 @@
 
 import { render } from '@testing-library/react';
 import {useState, Component} from 'react';
-import Resultsgit from './gifCard';
+import Results from './gifCard';
 
 
 
 class Search extends Component {
 
     state = {
-        setquery : ""
+        setquery : "",
+        hasSearched: false,
+        searchResults : [],
     } 
     
 
     handleSubmit = (event) => {
 
+        event.preventDefault();
         const url = 'http://api.giphy.com/v1/gifs/search';
         const API_KEY = 'zv3vBNsGF6xI3nmtHkcBBd22oClKsEQr';
-        const fetchSearch = fetch(`${url}?api_key=${API_KEY}&q=${event.value}}`)
+        fetch(`${url}?api_key=${API_KEY}&q=${event.value}}`)
             .then(function(response) {
                 return response.json();
             })
-            .then(function(myJson) {
-                console.log(myJson);
+            .then(response => {
+                this.setState({
+                    searchResults: response.data,
+                })
+                console.log(this.state.searchResults);
             });
-        const searchResults = fetchSearch.data.data;
+        
 
-        console.log(searchResults);
+        console.log(this.state.searchResults);
     }
 
     handleChange = event => {
