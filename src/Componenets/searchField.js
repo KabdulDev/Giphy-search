@@ -1,6 +1,7 @@
 
 import { render } from '@testing-library/react';
 import {useState, Component} from 'react';
+import Resultsgit from './gifCard';
 
 
 

@@ -1,11 +1,13 @@
 
 
-function App() {
+function Results( props) {
   return (
-    <div className="App">
+    <div>
+        <h1>{props.data.title}</h1>
+        <img src={props.data.images.fixed_height.url} />
 
     </div>
   );
 }
 
-export default App;
+export default Results;
