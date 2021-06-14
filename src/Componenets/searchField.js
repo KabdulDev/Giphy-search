@@ -30,7 +30,9 @@ class Search extends Component {
                 console.log(this.state.searchResults);
             });
         
-
+        this.setState({
+            hasSearched : true
+        })
         console.log(this.state.searchResults);
     }
 
@@ -42,12 +44,28 @@ class Search extends Component {
     }
     
     showResults = () =>{
-        this.state.searchResults.map((result,i) => {
+        this.trendingGif();
+        this.state.searchResults.map((result) => {
             return <Results 
-                key ={i}
-                data = {result}
+                props = {result}
         />
         })
+    }
+
+    trendingGif = () => {
+        const url = 'api.giphy.com/v1/gifs/trending';
+        const API_KEY = 'zv3vBNsGF6xI3nmtHkcBBd22oClKsEQr';
+        fetch(`${url}?api_key=${API_KEY}`)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(response => {
+                this.setState({
+                    searchResults: response.data,
+                })
+                console.log(this.state.searchResults);
+            });
+        
     }
 
 
