@@ -6,7 +6,7 @@ function App() {
     <div className="App">
       <h1> Giphy Search</h1>
       <h2>Your Source for Trending Gifs!</h2>
-      <Search query="test"/>
+      <Search />
       
     </div>
   );
