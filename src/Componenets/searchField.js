@@ -1,18 +1,13 @@
 import { Component} from 'react';
 import Results from './gifCard';
 
+import './searchField.css';
+
 
 const API_KEY = process.env.REACT_APP_GIPHY_KEY;
 class Search extends Component {
 
-    
-
-    
-
-
-
-    
-
+   
     state = {
         setquery : "",
         hasSearched: false,
@@ -30,8 +25,14 @@ class Search extends Component {
     handleSubmit = (event) => {
 
         event.preventDefault();
+        const query = this.state.setquery
         const url = 'http://api.giphy.com/v1/gifs/search';
-        fetch(`${url}?api_key=${API_KEY}&q=${this.state.setquery}`)
+
+        if(query === ""){
+            this.trendingGif();
+        }
+        else{
+            fetch(`${url}?api_key=${API_KEY}&q=${query}`)
             .then(function(response) {
                 return response.json();
             })
@@ -49,8 +50,9 @@ class Search extends Component {
                 })
 
             }) 
-        
-        
+
+        }
+
         // console.log(this.state.searchResults);
     }
 
@@ -66,8 +68,12 @@ class Search extends Component {
        
         // console.log(this.state.searchResults)
         
-        return this.state.searchResults.map((result, id) => {return <Results key = {id} props = {result} /> })
-        
+        return <div className="resultLayout"> {this.state.searchResults.map((result, id) => {
+             
+                    return <Results key = {id} props = {result} />
+            
+            })}
+        </div>
     }
 
     showRandom = () => {
@@ -87,7 +93,8 @@ class Search extends Component {
                 this.setState({
                     searchResults: response.data,
                 })
-                // console.log(this.state.searchResults); Used for debugging no longer necessary
+                console.log(this.state.searchResults); 
+                // Used for debugging no longer necessary
             })
 
         
@@ -128,11 +135,11 @@ class Search extends Component {
                         onChange={this.handleChange}
                         
                     />
-                    <input 
+                    <input className="searchButton"
                         type="submit"
                         value="Search"
                     />
-                    <button onClick={this.randomButton}>Random!</button>
+                    <button className="searchButton" onClick={this.randomButton}>Random!</button>
                 </form>
                 
 
