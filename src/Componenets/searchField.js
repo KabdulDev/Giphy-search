@@ -1,5 +1,3 @@
-
-import { render } from '@testing-library/react';
 import { Component} from 'react';
 import Results from './gifCard';
 
@@ -8,16 +6,20 @@ import Results from './gifCard';
 class Search extends Component {
 
 
-    componentDidMount(){
-        this.trendingGif();
-        // this.showResults();
-    }
+    
 
     state = {
         setquery : "",
         hasSearched: false,
         searchResults : [],
     } 
+
+    componentDidMount(){
+        // this.trendingGif();
+        // console.log("Did Mount function")
+        this.trendingGif();
+        
+    }
     
 
     handleSubmit = (event) => {
@@ -25,7 +27,7 @@ class Search extends Component {
         event.preventDefault();
         const url = 'http://api.giphy.com/v1/gifs/search';
         const API_KEY = 'zv3vBNsGF6xI3nmtHkcBBd22oClKsEQr';
-        fetch(`${url}?api_key=${API_KEY}&q=${this.state.setquery}}`)
+        fetch(`${url}?api_key=${API_KEY}&q=${this.state.setquery}`)
             .then(function(response) {
                 return response.json();
             })
@@ -57,36 +59,39 @@ class Search extends Component {
     }
     
     showResults = () =>{
-        return this.state.searchResults.map((result) => {return <Results props = {result} /> })
+       
+        // console.log(this.state.searchResults)
+        return this.state.searchResults.map((result, id) => {return <Results key = {id} props = {result} /> })
 
-        //     console.log(this.state.searchResults)
-        //     return <Results 
-        //         props = {this.state.searchResults[0]}
-        // />
-        
     }
 
     trendingGif = () => {
-        const url = 'api.giphy.com/v1/gifs/trending';
+        const url = 'http://api.giphy.com/v1/gifs/trending';
         const API_KEY = 'zv3vBNsGF6xI3nmtHkcBBd22oClKsEQr';
         fetch(`${url}?api_key=${API_KEY}`)
             .then(function(response) {
+                if(!response.ok) {
+                    throw new Error(`Network response was not ok`);
+                }
                 return response.json();
             })
             .then(response => {
                 this.setState({
                     searchResults: response.data,
                 })
-                console.log(this.state.searchResults);
-            });
+                // console.log(this.state.searchResults); Used for debugging no longer necessary
+            })
+
         
     }
 
-
+    
 
 
   render() {
-    const results = this.state.hasSearched ? this.showResults() : <></>;
+   
+    const results = this.showResults();
+    
     return (
         <div >
             <div>

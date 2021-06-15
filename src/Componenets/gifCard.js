@@ -1,7 +1,7 @@
 
 
 function Results( props) {
-    console.log(props)
+    // console.log(props)
   return (
     <div>
         <h1>{props.props.title}</h1>
