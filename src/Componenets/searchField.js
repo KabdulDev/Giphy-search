@@ -7,6 +7,12 @@ import Results from './gifCard';
 
 class Search extends Component {
 
+
+    componentDidMount(){
+        this.trendingGif();
+        // this.showResults();
+    }
+
     state = {
         setquery : "",
         hasSearched: false,
@@ -19,7 +25,7 @@ class Search extends Component {
         event.preventDefault();
         const url = 'http://api.giphy.com/v1/gifs/search';
         const API_KEY = 'zv3vBNsGF6xI3nmtHkcBBd22oClKsEQr';
-        fetch(`${url}?api_key=${API_KEY}&q=${event.value}}`)
+        fetch(`${url}?api_key=${API_KEY}&q=${this.state.setquery}}`)
             .then(function(response) {
                 return response.json();
             })
@@ -28,28 +34,36 @@ class Search extends Component {
                     searchResults: response.data,
                 })
                 console.log(this.state.searchResults);
-            });
+            })
+            .then(() => {
+                // console.log(this.state.searchResults);
+                // (this.showResults());
+                this.setState({
+                    hasSearched : true
+                })
+
+            }) 
         
-        this.setState({
-            hasSearched : true
-        })
-        console.log(this.state.searchResults);
+        
+        // console.log(this.state.searchResults);
     }
 
     handleChange = event => {
         this.setState({
-            setQuery : event.target.value
+            setquery : event.target.value
         })
+        console.log(this.state.setquery)
 
     }
     
     showResults = () =>{
-        this.trendingGif();
-        this.state.searchResults.map((result) => {
-            return <Results 
-                props = {result}
-        />
-        })
+        return this.state.searchResults.map((result) => {return <Results props = {result} /> })
+
+        //     console.log(this.state.searchResults)
+        //     return <Results 
+        //         props = {this.state.searchResults[0]}
+        // />
+        
     }
 
     trendingGif = () => {
@@ -69,7 +83,10 @@ class Search extends Component {
     }
 
 
+
+
   render() {
+    const results = this.state.hasSearched ? this.showResults() : <></>;
     return (
         <div >
             <div>
@@ -87,13 +104,13 @@ class Search extends Component {
 
             </div>
             <div>
-                {this.showResults}
+                {results}
             </div>
           
         </div>
       );
 
-  }
+  };
   
 }
 
