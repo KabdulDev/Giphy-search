@@ -2,8 +2,13 @@ import { Component} from 'react';
 import Results from './gifCard';
 
 
-
+const API_KEY = process.env.REACT_APP_GIPHY_KEY;
 class Search extends Component {
+
+    
+
+    
+
 
 
     
@@ -26,7 +31,6 @@ class Search extends Component {
 
         event.preventDefault();
         const url = 'http://api.giphy.com/v1/gifs/search';
-        const API_KEY = 'zv3vBNsGF6xI3nmtHkcBBd22oClKsEQr';
         fetch(`${url}?api_key=${API_KEY}&q=${this.state.setquery}`)
             .then(function(response) {
                 return response.json();
@@ -61,13 +65,17 @@ class Search extends Component {
     showResults = () =>{
        
         // console.log(this.state.searchResults)
+        
         return this.state.searchResults.map((result, id) => {return <Results key = {id} props = {result} /> })
+        
+    }
 
+    showRandom = () => {
+        return <Results props = {this.state.searchResults} />;
     }
 
     trendingGif = () => {
         const url = 'http://api.giphy.com/v1/gifs/trending';
-        const API_KEY = 'zv3vBNsGF6xI3nmtHkcBBd22oClKsEQr';
         fetch(`${url}?api_key=${API_KEY}`)
             .then(function(response) {
                 if(!response.ok) {
@@ -85,12 +93,31 @@ class Search extends Component {
         
     }
 
+    randomButton = () => {
+
+        const url = 'http://api.giphy.com/v1/gifs/random';
+        fetch(`${url}?api_key=${API_KEY}`)
+            .then(function(response) {
+                if(!response.ok) {
+                    throw new Error(`Network response was not ok`);
+                }
+                return response.json();
+            })
+            .then(response => {
+                this.setState({
+                    searchResults: response.data,
+                })
+                // console.log(this.state.searchResults);Used for debugging no longer necessary
+            })
+
+    }
+
     
 
 
   render() {
    
-    const results = this.showResults();
+    const results = Array.isArray(this.state.searchResults) ? this.showResults() : this.showRandom();
     
     return (
         <div >
@@ -105,7 +132,9 @@ class Search extends Component {
                         type="submit"
                         value="Search"
                     />
+                    <button onClick={this.randomButton}>Random!</button>
                 </form>
+                
 
             </div>
             <div>
